@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="할 일을 정리하고 진행 상황을 한눈에 확인하는 To-Do 리스트"
+    />
+    <title>할 일 - To-Do</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body class="min-h-screen bg-slate-100 text-slate-800 antialiased">
+    <div class="min-h-screen lg:flex">
+      <aside class="border-b border-slate-200 bg-white lg:min-h-screen lg:w-64 lg:border-b-0 lg:border-r">
+        <div class="flex items-center gap-3 px-5 py-5 lg:px-6 lg:py-7">
+          <div class="grid h-10 w-10 place-items-center rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-200" aria-hidden="true">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+              <path d="m5 12 4.2 4.2L19 6.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">My workspace</p>
+            <h1 class="text-lg font-bold tracking-tight text-slate-900">하루의 할 일</h1>
+          </div>
+        </div>
+
+        <nav class="flex gap-2 overflow-x-auto px-4 pb-4 lg:block lg:space-y-2 lg:px-4" aria-label="할 일 필터">
+          <button
+            class="filter-button flex shrink-0 items-center gap-3 rounded-xl bg-blue-50 px-4 py-3 text-left text-sm font-semibold text-blue-700 transition hover:bg-blue-100 lg:w-full"
+            type="button"
+            data-filter="all"
+            aria-pressed="true"
+          >
+            <span class="filter-dot bg-blue-600" aria-hidden="true"></span>
+            <span class="flex-1">전체</span>
+            <span class="filter-count rounded-full bg-white px-2 py-0.5 text-xs text-blue-700" data-count="all">0</span>
+          </button>
+          <button
+            class="filter-button flex shrink-0 items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 lg:w-full"
+            type="button"
+            data-filter="active"
+            aria-pressed="false"
+          >
+            <span class="filter-dot border-2 border-slate-300" aria-hidden="true"></span>
+            <span class="flex-1">진행 중</span>
+            <span class="filter-count rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500" data-count="active">0</span>
+          </button>
+          <button
+            class="filter-button flex shrink-0 items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 lg:w-full"
+            type="button"
+            data-filter="completed"
+            aria-pressed="false"
+          >
+            <span class="filter-dot grid place-items-center border-2 border-slate-300" aria-hidden="true"></span>
+            <span class="flex-1">완료</span>
+            <span class="filter-count rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-500" data-count="completed">0</span>
+          </button>
+        </nav>
+
+        <div class="hidden px-6 pb-6 lg:block">
+          <div class="rounded-2xl bg-slate-50 p-4">
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">작은 한 걸음</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600">오늘 할 일을 하나씩 완료하며 나만의 속도로 나아가 보세요.</p>
+          </div>
+        </div>
+      </aside>
+
+      <main class="mx-auto w-full max-w-5xl px-4 py-7 sm:px-6 sm:py-10 lg:px-12 lg:py-12">
+        <header class="mb-7 flex flex-wrap items-end justify-between gap-4 sm:mb-8">
+          <div>
+            <p id="today-date" class="mb-2 text-sm font-medium text-slate-500"></p>
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">오늘의 계획</h2>
+            <p class="mt-2 text-sm text-slate-500 sm:text-base">해야 할 일을 적고, 하나씩 완료해 보세요.</p>
+          </div>
+          <div class="hidden h-12 w-12 items-center justify-center rounded-2xl bg-white text-blue-600 shadow-sm sm:flex" aria-hidden="true">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+              <path d="M8 3v3m8-3v3M4.5 9.5h15M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="m8.5 14 2 2 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </header>
+
+        <section class="mb-6 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-white shadow-lg shadow-blue-200/60 sm:p-6" aria-labelledby="progress-heading">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 id="progress-heading" class="text-sm font-semibold text-blue-100">오늘의 진행률</h3>
+              <p class="mt-1"><span id="progress-count" class="text-2xl font-bold">0 / 0</span><span class="ml-2 text-sm text-blue-100">완료</span></p>
+            </div>
+            <p id="progress-percent" class="text-3xl font-bold">0%</p>
+          </div>
+          <div class="mt-4 h-2 overflow-hidden rounded-full bg-blue-400/50" role="progressbar" aria-label="할 일 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="progress-bar" class="h-full rounded-full bg-white transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </section>
+
+        <p id="storage-notice" class="mb-5 hidden rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900" role="status"></p>
+
+        <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" aria-labelledby="list-heading">
+          <div class="border-b border-slate-100 p-4 sm:p-6">
+            <form id="todo-form" class="flex gap-2 sm:gap-3">
+              <label class="sr-only" for="todo-input">새 할 일</label>
+              <input
+                id="todo-input"
+                class="min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100"
+                type="text"
+                placeholder="새로운 할 일을 입력하세요"
+                autocomplete="off"
+              />
+              <button class="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 sm:px-5" type="submit">
+                <span aria-hidden="true" class="text-lg leading-none">+</span>
+                <span>추가</span>
+              </button>
+            </form>
+          </div>
+
+          <div class="flex items-center justify-between gap-3 px-4 pb-3 pt-5 sm:px-6">
+            <div>
+              <h3 id="list-heading" class="font-semibold text-slate-900">할 일 목록</h3>
+              <p id="visible-count" class="mt-1 text-xs text-slate-500">0개 항목</p>
+            </div>
+            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-500">자동 저장</span>
+          </div>
+
+          <ul id="todo-list" class="divide-y divide-slate-100 px-4 sm:px-6" aria-live="polite"></ul>
+          <div id="empty-state" class="px-6 py-12 text-center">
+            <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-blue-50 text-blue-600" aria-hidden="true">
+              <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none">
+                <path d="M8 5h11M8 10h11M8 15h7M4.5 5h.01M4.5 10h.01M4.5 15h.01M5 21h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <h4 id="empty-title" class="mt-4 font-semibold text-slate-800">아직 등록된 할 일이 없어요</h4>
+            <p id="empty-description" class="mt-1 text-sm text-slate-500">위 입력창에서 오늘 할 일을 추가해 보세요.</p>
+          </div>
+          <p id="announcer" class="sr-only" aria-live="polite"></p>
+        </section>
+        <footer class="py-6 text-center text-xs text-slate-400">할 일은 이 브라우저에 자동으로 저장됩니다.</footer>
+      </main>
+    </div>
+  </body>
+</html>

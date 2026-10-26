@@ -1,0 +1,21 @@
+body {
+  font-family: "Segoe UI", "Malgun Gothic", system-ui, sans-serif;
+}
+
+.filter-button[aria-pressed="true"] .filter-dot {
+  border-color: #2563eb;
+}
+
+.filter-button[data-filter="completed"][aria-pressed="true"] .filter-dot {
+  background-color: #2563eb;
+  color: white;
+}
+
+.todo-row {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.todo-checkbox {
+  accent-color: #2563eb;
+}
